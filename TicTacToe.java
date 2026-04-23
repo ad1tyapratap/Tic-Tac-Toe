@@ -36,7 +36,28 @@ public class TicTacToe {
 
         System.out.println("\nPlayer " + currentPlayer + " starts first.");
 
-        // ===== UC3–UC5: Input + Convert + Validate =====
+        // ===== UC3–UC7: Play one turn each =====
+
+        // ---- Player Turn ----
+        playHumanTurn(board, currentPlayer, player1Symbol, player2Symbol);
+        printBoard(board);
+
+        // Switch player
+        currentPlayer = (currentPlayer == 1) ? 2 : 1;
+
+        // ---- Computer Turn ----
+        char computerSymbol = (currentPlayer == 1) ? player1Symbol : player2Symbol;
+        computerMove(board, computerSymbol);
+
+        printBoard(board);
+    }
+
+    // ===== Human Turn =====
+    public static void playHumanTurn(char[][] board, int currentPlayer,
+                                    char player1Symbol, char player2Symbol) {
+
+        char symbol = (currentPlayer == 1) ? player1Symbol : player2Symbol;
+
         int row, col;
 
         while (true) {
@@ -47,39 +68,42 @@ public class TicTacToe {
             col = position[1];
 
             if (isValidMove(board, row, col)) {
+                placeMove(board, row, col, symbol);
                 break;
             } else {
                 System.out.println("Invalid move! Try again.");
             }
         }
-
-        // ===== UC6: Update board =====
-        char symbol = (currentPlayer == 1) ? player1Symbol : player2Symbol;
-        placeMove(board, row, col, symbol);
-
-        printBoard(board);
     }
 
-    // Print board
-    public static void printBoard(char[][] board) {
-        System.out.println("Tic-Tac-Toe Board:");
+    // ===== Computer Move (UC7) =====
+    public static void computerMove(char[][] board, char symbol) {
+        Random random = new Random();
+        int row, col;
 
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                System.out.print(board[i][j] + " ");
+        while (true) {
+            int slot = random.nextInt(9) + 1;
+
+            int[] position = convertSlotToPosition(slot);
+            row = position[0];
+            col = position[1];
+
+            if (isValidMove(board, row, col)) {
+                placeMove(board, row, col, symbol);
+                System.out.println("Computer chose slot: " + slot);
+                break;
             }
-            System.out.println();
         }
     }
 
-    // Input
+    // ===== Input =====
     public static int getUserInput() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter slot (1-9): ");
         return scanner.nextInt();
     }
 
-    // Convert slot → row, col
+    // ===== Convert slot → row, col =====
     public static int[] convertSlotToPosition(int slot) {
         slot = slot - 1;
         int row = slot / 3;
@@ -87,7 +111,7 @@ public class TicTacToe {
         return new int[]{row, col};
     }
 
-    // Validate move
+    // ===== Validate move =====
     public static boolean isValidMove(char[][] board, int row, int col) {
         if (row < 0 || row > 2 || col < 0 || col > 2) {
             return false;
@@ -95,8 +119,20 @@ public class TicTacToe {
         return board[row][col] == '-';
     }
 
-    // ===== UC6: Place move =====
+    // ===== Place move =====
     public static void placeMove(char[][] board, int row, int col, char symbol) {
         board[row][col] = symbol;
+    }
+
+    // ===== Print board =====
+    public static void printBoard(char[][] board) {
+        System.out.println("\nTic-Tac-Toe Board:");
+
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                System.out.print(board[i][j] + " ");
+            }
+            System.out.println();
+        }
     }
 }
