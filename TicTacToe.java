@@ -16,7 +16,7 @@ public class TicTacToe {
 
         printBoard(board);
 
-        // ===== UC2: Toss and assign players =====
+        // ===== UC2: Toss =====
         Random random = new Random();
         int toss = random.nextInt(2);
 
@@ -34,17 +34,25 @@ public class TicTacToe {
             player2Symbol = 'X';
         }
 
-        System.out.println("\n--- Game Setup ---");
-        System.out.println("Player 1 Symbol: " + player1Symbol);
-        System.out.println("Player 2 Symbol: " + player2Symbol);
-        System.out.println("Player " + currentPlayer + " starts first.");
+        System.out.println("\nPlayer " + currentPlayer + " starts first.");
 
-        // ===== UC3: Take user input =====
+        // ===== UC3: Input =====
         int slot = getUserInput();
-        System.out.println("You selected slot: " + slot);
+
+        // ===== UC4: Convert slot to row & column =====
+        int[] position = convertSlotToPosition(slot);
+        int row = position[0];
+        int col = position[1];
+
+        System.out.println("Row: " + row + ", Column: " + col);
+
+        // (Preview of next step)
+        board[row][col] = (currentPlayer == 1) ? player1Symbol : player2Symbol;
+
+        printBoard(board);
     }
 
-    // Method to print the board
+    // Print board
     public static void printBoard(char[][] board) {
         System.out.println("Tic-Tac-Toe Board:");
 
@@ -56,13 +64,21 @@ public class TicTacToe {
         }
     }
 
-    // ===== UC3 Method: Get user input =====
+    // UC3: Input method
     public static int getUserInput() {
         Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter slot (1-9): ");
+        return scanner.nextInt();
+    }
 
-        System.out.print("Enter a slot number (1-9): ");
-        int slot = scanner.nextInt();
+    // ===== UC4: Conversion method =====
+    public static int[] convertSlotToPosition(int slot) {
 
-        return slot;
+        slot = slot - 1; // convert to 0-based index
+
+        int row = slot / 3;
+        int col = slot % 3;
+
+        return new int[]{row, col};
     }
 }
