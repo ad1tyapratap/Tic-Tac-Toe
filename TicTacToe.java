@@ -1,19 +1,45 @@
+import java.util.Random;
+
 public class TicTacToe {
 
     public static void main(String[] args) {
 
-        // Step 1: Create a 3x3 board
+        // ===== UC1: Create and initialize board =====
         char[][] board = new char[3][3];
 
-        // Step 2: Initialize board with '-'
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 board[i][j] = '-';
             }
         }
 
-        // Step 3: Print the board
+        // Print empty board
         printBoard(board);
+
+        // ===== UC2: Toss and assign players =====
+        Random random = new Random();
+        int toss = random.nextInt(2);
+
+        char player1Symbol;
+        char player2Symbol;
+        int currentPlayer; // 1 or 2
+
+        if (toss == 0) {
+            currentPlayer = 1;
+            player1Symbol = 'X';
+            player2Symbol = 'O';
+        } else {
+            currentPlayer = 2;
+            player1Symbol = 'O';
+            player2Symbol = 'X';
+        }
+
+        // Display game setup
+        System.out.println("\n--- Game Setup ---");
+        System.out.println("Toss Result: " + toss);
+        System.out.println("Player 1 Symbol: " + player1Symbol);
+        System.out.println("Player 2 Symbol: " + player2Symbol);
+        System.out.println("Player " + currentPlayer + " starts first.");
     }
 
     // Method to print the board
@@ -24,7 +50,7 @@ public class TicTacToe {
             for (int j = 0; j < 3; j++) {
                 System.out.print(board[i][j] + " ");
             }
-            System.out.println(); // Move to next row
+            System.out.println();
         }
     }
 }
